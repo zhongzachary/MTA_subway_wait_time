@@ -21,26 +21,26 @@ In both scenarios, the simple definition would tell us they have the same arriva
 So instead of looking at the number of trains per hour, we look at the **average wait time** of riders during that hour, and multiply the average wait time by 2 will give us the **effective frequency**. In Scenario 2, the in-theory-15-minute-per-train schedule becomes 19 minutes per train in practice.
 
 <details>
+
 <summary>Some math on average wait time calculation</summary>
 
 To introduce some formality, the average wait time is
 
-$$
-\text{AvgWaitTime} = \int_S^T \text{WaitTime}(t) \cdot \text{RiderDensity}(t) \, dt
-$$
+$$\text{AvgWaitTime} = \int_S^T \text{WaitTime}(t) \cdot \text{RiderDensity}(t) dt$$
+
 where $S$ and $T$ are the start and end time of the observing periods, respectively.
 
 Here we are assuming uniform rider density, i.e. $1 / (T - S)$, and the wait time at time $t$ is piecewise linear function of slope -1 (think about the isosceles right triangles above), specifically
-$$
-\text{WaitTime}(t) = \text{NextArrivalTime} - t
-$$
 
-Then, the average wait time during an hour (i.e. $T-S=1$) can be simplified calculate the total area of the wait-time triangles, and then subtract the small triangles after the 1-hour mark (under the dotted line). Numerically:
-$$
-\text{AvgWaitTime} = \sum_{n=1}^N \frac{1}{2}(\text{ArrivalTime}_n - \text{ArrivalTime}_{n-1})^2 - \frac{1}{2}(\text{ArrivalTime}_N - T)^2
-$$
-where $N$ is the number of arrivals during the period + 1 (adding 1 for the arrival immediately after the hour), and $\text{ArrivalTime}_0$ is set to the start time of the period, $S$.
+$$\text{WaitTime}(t) = \text{NextArrivalTime} - t$$
 
+Then, the average wait time during an hour (i.e. $T-S=1$) can be simplified calculate the total area of the wait-time triangles, and then subtract the small triangles after the 1-hour mark (under the dotted line). Putting it in equation:
+
+$$\text{AvgWaitTime} = \frac{1}{T - S} \cdot \frac{1}{2} \cdot \left[\sum_{n=1}^N (\text{ArrivalTime}(n) - \text{ArrivalTime}(n-1))^2 - (\text{ArrivalTime}(N) - T)^2\right]$$
+
+where $N$ is the number of arrivals during the period + 1 (adding 1 for the arrival immediately after the hour), and $\text{ArrivalTime}(0)$ is set to the start time of the period, $S$.
+
+For example, in scenario 2 where trains arrived at 5, 20, 46, 50, and 65 minutes after the start time, the average wait time will be $\frac{1}{60} \cdot \frac{1}{2} \cdot (5^2 + 15^2 + 26^2 + 4^2 + 15^2 - 5^2) = 9.52 \text{ min}$.
 </details>
 
 
@@ -60,7 +60,7 @@ Now, lets look at some real world example, northbound N and Q trains at Kings Hw
 
 ![kings_hwy_N_Q_weekday_8am](img/kings_hwy_N_Q_weekday_8am.png)
 
-Or let's also look at the same statios at 8AM during weekend:
+Or let's also look at the same stations at 8AM during weekend:
 
 ![kings_hwy_N_Q_weekend_8am](img/kings_hwy_N_Q_weekend_8am.png)
 
