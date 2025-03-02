@@ -24,11 +24,20 @@ WITH
 SELECT
   *,
   len(arrivals_in_period) AS num_arrivals,
+  
   subway.average_wait_time_in_period(
     start_timestamp,
     start_timestamp + period_length,
     arrivals_in_period,
     next_arrival_after_period
-  ) as avg_wait_time
+  ) AS avg_wait_time,
+
+  subway.wait_time_ranges(
+    start_timestamp,
+    start_timestamp + period_length,
+    arrivals_in_period,
+    next_arrival_after_period
+  ) AS wait_time_ranges,
+  
 FROM calculate_wait_time
 );

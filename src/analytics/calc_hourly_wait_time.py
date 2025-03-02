@@ -1,5 +1,6 @@
 import duckdb
 
+
 files = [
     "sql/macro/average_wait_time_in_period.sql",
     "sql/transformation/create_route_stop_arrivals.sql",
